@@ -1,31 +1,51 @@
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-//Important: 
-// 1. The only concurrent or thread-safe classes that you 
-//    allowed to import for this class are the two shown below.
-// 2. This class must deal with all exceptions locally, i.e. 
-//    it's public methods must not 'throw' any exceptions to the caller
-//    otherwise our compilation of your code will fail.
-
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.Map;
+import java.util.Queue;
 import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
+public class JobShopManager implements JobShopInterface {
 
-public class JobShopManager implements JobShopInterface{        
-    // Constructor
+    private final String mode;
+    private final ReentrantLock lock;
+
+    private final Map<String, Queue<MachineRequest>> waitingMachines;
+    private final List<Job> pendingJobs;
+
+    private static class MachineRequest {
+        final String machineType;
+        final int machineID;
+        final Condition condition;
+
+        String assignedJobName;
+        boolean released;
+
+        MachineRequest(String machineType, int machineID, Condition condition) {
+            this.machineType = machineType;
+            this.machineID = machineID;
+            this.condition = condition;
+            this.assignedJobName = null;
+            this.released = false;
+        }
+    }
+
     public JobShopManager(String mode) {
-        // FCFS = First Come First Served
-        // SJF = Shortest Job First 
+        this.mode = mode;
+        this.lock = new ReentrantLock();
+        this.waitingMachines = new HashMap<>();
+        this.pendingJobs = new ArrayList<>();
     }
 
     @Override
     public void specifyJobs(List<Job> jobs) {
-        //Your code here
+        
     }
 
     @Override
     public String thisMachineAvailable(String type, int ID) {
-        //Your code here
+        
         return "your return string here";
-    }   
+    }
 }
