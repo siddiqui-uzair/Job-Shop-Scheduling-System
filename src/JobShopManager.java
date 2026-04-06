@@ -75,7 +75,7 @@ public class JobShopManager implements JobShopInterface {
         }
     }
 
-    private void tryReleaseJobs() {   // Try to release jobs in queue order while enough machines are available
+    private void tryReleaseJobs() {  // Try to release jobs in queue order while enough machines are available
         while (!pendingJobs.isEmpty()) {
             Job nextJob = pendingJobs.get(0);
 
@@ -88,7 +88,7 @@ public class JobShopManager implements JobShopInterface {
         }
     }
 
-    // to  check weaather all machines types needed by a job are currently waiting
+    // to  check weather all machines types needed by a job are currently waiting
     private boolean canSatisfy(Job job) {
         Map<String, Integer> requiredMachines = countRequiredMachines(job);
 
@@ -107,7 +107,7 @@ public class JobShopManager implements JobShopInterface {
         return true;
     }
 
-    // asssign the required waiting machines to this job and wake them up
+    // assign the required waiting machines to this job and wake them up
     private void releaseJob(Job job) {
 
         // determine how many machines of each type this job needs
