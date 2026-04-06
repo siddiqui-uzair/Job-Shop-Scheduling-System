@@ -19,7 +19,11 @@ public class Tests {
                 @Override
                 public void run() {  // save the returned job name so later tests can check it
                         returnedJobName = jobShopManager.thisMachineAvailable(machineType, machineID);
-                        System.out.println(machineType + " " + machineID + " machine proceeding for"  + returnedJobName);
+                        
+                        if (returnedJobName == null) {
+                                        System.out.println(machineType + " " + machineID + " machine proceeding with null job name");
+                        } else {
+                                        System.out.println(machineType + " " + machineID + " machine proceeding for "  + returnedJobName);
                 }
         }
 
