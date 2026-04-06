@@ -151,5 +151,32 @@ public class Tests {
                 + "\tFour FDM machines and one SLA machine should proceed.\n\t"
                 + "The printed job names should be Job1 or Job2.\n");
 }
+
+        public void shortestJobFirstTest() {
+                JobShopManager jobShopManager = new JobShopManager("SJF");
+                
+                Job longJob = new Job(
+                        "LongJob",
+                        List.of(new Operation("FDM", 8),
+                                new Operation("SLA", 7)));
+
+                Job shortJob = new Job(
+                        "ShortJob",
+                        List.of(new Operation("FDM", 2)));
+
+        System.out.println("\nSubmit SJF jobs:\n");
+        System.out.println(longJob);
+        System.out.println(shortJob);
+        jobShopManager.specifyJobs(List.of(longJob, shortJob));
+
+        MachineThread fdmThread = new MachineThread(jobShopManager, "FDM", 1);
+        fdmThread.start();
+
+        try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+
+        System.out.println("\nExpected result:\n"
+                + "\tOnly one FDM machine should proceed.\n\t"
+                + "It should be released for ShortJob first.\n");
+        }
 }
 
