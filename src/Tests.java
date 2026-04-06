@@ -178,5 +178,39 @@ public class Tests {
                 + "\tOnly one FDM machine should proceed.\n\t"
                 + "It should be released for ShortJob first.\n");
         }
-}
 
+        public void multipleShortestJobsTest() {
+                JobShopManager jobShopManager = new JobShopManager("SJF");
+
+                Job longJob = new Job(
+                        "LongJob",
+                        List.of(new Operation("FDM", 9),
+                                new Operation("SLA", 8)));
+
+                Job shortJob1 = new Job(
+                        "ShortJob1",
+                        List.of(new Operation("FDM", 2)));
+
+                Job shortJob2 = new Job(
+                        "ShortJob2",
+                        List.of(new Operation("FDM", 3)));
+
+        System.out.println("\nSubmit multiple SJF jobs:\n");
+        System.out.println(longJob);
+        System.out.println(shortJob1);
+        System.out.println(shortJob2);
+        jobShopManager.specifyJobs(List.of(longJob, shortJob1, shortJob2));
+
+        MachineThread fdm1 = new MachineThread(jobShopManager, "FDM", 1);
+        MachineThread fdm2 = new MachineThread(jobShopManager, "FDM", 2);
+
+        fdm1.start();
+        fdm2.start();
+
+        try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+
+        System.out.println("\nExpected result:\n"
+                + "\tTwo FDM machines should proceed.\n\t"
+                + "They should be released for ShortJob1 and ShortJob2.\n");
+        }
+}
