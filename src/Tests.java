@@ -90,14 +90,14 @@ public class Tests {
         try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 
         System.out.println("\nNow start the machines:\n");
-        
+
         for (int i=1; i<=6; i++) new MachineThread(jobShopManager, "FDM", i).start();
         for (int i=1; i<=2; i++) new MachineThread(jobShopManager, "SLA", i).start();
 
         try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 
         System.out.println("\nExpected result:\n"
-                + "\tFive FDM machines and one SLA machine should proceed.\n\t"
+                + "\tFour FDM machines and one SLA machine should proceed.\n\t"
                 + "The printed job names should be Job1 or Job2.\n");
 }
 }
