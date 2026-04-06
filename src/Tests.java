@@ -9,7 +9,7 @@ public class Tests {
                 private final JobShopManager jobShopManager;
 
                 public MachineThread(JobShopManager jobShopManager, String machineType, int machineID) {
-                        this.jobShopManager = jobShopManager;   
+                        this.jobShopManager = jobShopManager;
                         this.machineType = machineType;
                         this.machineID = machineID;
                         this.setName("Machine-" + machineType + "-" + machineID);
@@ -41,7 +41,7 @@ public class Tests {
                                         new Operation("FDM", 3),
                                         new Operation("FDM", 3),
                                         new Operation("SLA", 3)));
-   
+
                 //Specify job 2
                 Job job2 = new Job(
                                 "Job2",
@@ -51,18 +51,16 @@ public class Tests {
                 //Print out and submit jobs
                 System.out.println("\nSpecify the Jobs ()   (and note that processing time is not used in FCFS)");
                 System.out.println(job1);
-                System.out.println(job2);     
+                System.out.println(job2);
                 jobShopManager.specifyJobs(List.of(job1, job2));
                 //Allow job specifier to run and release machines
-                try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}  
+                try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 
-                System.out.println("\nNow examine the machines released:\n" 
-                        + "\tAs there is no functional code in the JobShopManager yet\n\t" 
-                        + "all six FDM and two SLA machine threads have been released to proceed.\n\t"
-                        + "The correct result would be to release five FDM and one SLA machines after the\n\t"
-                        + "the two jobs had been submitted.\n"
+                System.out.println("\nNow examine the machines released:\n"
+                        + "\tThe correct result is that five FDM machines and one SLA machine proceed.\n\t"
+                        + "The specific machine IDs may vary between runs depending on thread scheduling.\n"
 
-                );    
+                );
         }
 
 }
