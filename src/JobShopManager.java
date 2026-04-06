@@ -140,4 +140,14 @@ public class JobShopManager implements JobShopInterface {
 
         return requiredMachines;
     }
+
+    private int totalProcessingTime(Job job) {
+        int total = 0;
+
+        for (Operation operation : job.operations) {
+            total += operation.processingTime;
+        }
+        
+        return total;
+    }
 }
