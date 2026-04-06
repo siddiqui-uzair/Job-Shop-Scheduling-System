@@ -125,6 +125,28 @@ public class Tests {
         System.out.println("FDM: " + releasedFdm);
         System.out.println("SLA: " + releasedSla);
 
+        int job1Count = 0;
+        int job2Count = 0;
+
+        for (MachineThread thread : fdmThreads) {
+                if ("Job1".equals(thread.returnedJobName)) {
+                        job1Count++;
+                } else if ("Job2".equals(thread.returnedJobName)) {
+                        job2Count++;
+                }
+        }
+
+        for (MachineThread thread : slaThreads) {
+                if ("Job1".equals(thread.returnedJobName)) {
+                        job1Count++;
+                } else if ("Job2".equals(thread.returnedJobName)) {
+                        job2Count++;
+                }
+        }
+
+        System.out.println("Job1 assignments: " + job1Count);
+        System.out.println("Job2 assignments: " + job2Count);
+
         System.out.println("\nExpected result:\n"
                 + "\tFour FDM machines and one SLA machine should proceed.\n\t"
                 + "The printed job names should be Job1 or Job2.\n");
