@@ -89,7 +89,7 @@ public class JobShopManager implements JobShopInterface {
             }
 
             releaseJob(nextJob);
-            pendingJobs.remove(0);
+            pendingJobs.remove(nextJob);
         }
     }
 
