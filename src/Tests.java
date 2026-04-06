@@ -7,6 +7,7 @@ public class Tests {
                 public final String machineType;
                 public final int machineID;
                 private final JobShopManager jobShopManager;
+                public String returnedJobName;
 
                 public MachineThread(JobShopManager jobShopManager, String machineType, int machineID) {
                         this.jobShopManager = jobShopManager;
@@ -17,7 +18,7 @@ public class Tests {
 
                 @Override
                 public void run() {
-                        jobShopManager.thisMachineAvailable(machineType, machineID);
+                        returnedJobName = jobShopManager.thisMachineAvailable(machineType, machineID);
                         System.out.println(machineType + " " + machineID + " machine proceeding");
                 }
         }
@@ -59,7 +60,6 @@ public class Tests {
                 System.out.println("\nNow examine the machines released:\n"
                         + "\tThe correct result is that five FDM machines and one SLA machine proceed.\n\t"
                         + "The specific machine IDs may vary between runs depending on thread scheduling.\n"
-
                 );
         }
 
