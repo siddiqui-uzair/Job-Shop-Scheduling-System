@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -40,12 +41,33 @@ public class JobShopManager implements JobShopInterface {
 
     @Override
     public void specifyJobs(List<Job> jobs) {
-        
+        lock.lock();
+        try {
+            pendingJobs.addAll(jobs);
+            } finally {
+                lock.unlock();
+            }
     }
 
     @Override
     public String thisMachineAvailable(String type, int ID) {
-        
-        return "your return string here";
+        lock.lock();
+        try {
+            MachineRequest request = new MachineRequest(type, ID, lock.newCondition());
+            Queue<MachineRequest> queue =
+            waitingMachines.computeIfAbsent(type, key -> new LinkedList<>());
+            queue.add(request);
+
+        while (!request.released) {
+            try {
+                request.condition.await();
+                } catch (InterruptedException e) {
+                }
+            }
+
+        return request.assignedJobName;
+        } finally {
+            lock.unlock();
+        }
     }
 }
