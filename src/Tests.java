@@ -91,8 +91,18 @@ public class Tests {
 
         System.out.println("\nNow start the machines:\n");
 
-        for (int i=1; i<=6; i++) new MachineThread(jobShopManager, "FDM", i).start();
-        for (int i=1; i<=2; i++) new MachineThread(jobShopManager, "SLA", i).start();
+        MachineThread[] fdmThreads = new MachineThread[6];
+        MachineThread[] slaThreads = new MachineThread[2];
+
+        for (int i = 0; i < 6; i++) {
+                fdmThreads[i] = new MachineThread(jobShopManager, "FDM", i + 1);
+                fdmThreads[i].start();
+        }
+
+        for (int i = 0; i < 2; i++) {
+                slaThreads[i] = new MachineThread(jobShopManager, "SLA", i + 1);
+                slaThreads[i].start();
+        }
 
         try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 
