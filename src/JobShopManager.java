@@ -109,6 +109,8 @@ public class JobShopManager implements JobShopInterface {
 
     // asssign the required waiting machines to this job and wake them up
     private void releaseJob(Job job) {
+
+        // determine how many machines of each type this job needs
         Map<String, Integer> requiredMachines = countRequiredMachines(job);
 
         for (Map.Entry<String, Integer> entry : requiredMachines.entrySet()) {
