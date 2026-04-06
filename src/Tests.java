@@ -67,5 +67,38 @@ public class Tests {
                         + "The printed job names should match Job1 or Job2 for released machines.\n"
                 );
         }
+
+        public void jobsBeforeMachinesTest() {
+                JobShopManager jobShopManager = new JobShopManager("FCFS");
+
+        Job job1 = new Job(
+                "Job1",
+                List.of(new Operation("FDM", 5),
+                        new Operation("FDM", 3),
+                        new Operation("SLA", 3)));
+
+        Job job2 = new Job(
+                "Job2",
+                List.of(new Operation("FDM", 5),
+                        new Operation("FDM", 3)));
+
+        System.out.println("\nSubmit jobs before starting machines:\n");
+        System.out.println(job1);
+        System.out.println(job2);
+        jobShopManager.specifyJobs(List.of(job1, job2));
+
+        try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+
+        System.out.println("\nNow start the machines:\n");
+        
+        for (int i=1; i<=6; i++) new MachineThread(jobShopManager, "FDM", i).start();
+        for (int i=1; i<=2; i++) new MachineThread(jobShopManager, "SLA", i).start();
+
+        try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+
+        System.out.println("\nExpected result:\n"
+                + "\tFive FDM machines and one SLA machine should proceed.\n\t"
+                + "The printed job names should be Job1 or Job2.\n");
+}
 }
 
