@@ -77,7 +77,12 @@ public class JobShopManager implements JobShopInterface {
 
     private void tryReleaseJobs() {  // Try to release jobs in queue order while enough machines are available
         while (!pendingJobs.isEmpty()) {
-            Job nextJob = pendingJobs.get(0);
+            Job nextJob;
+            if ("SJF".equals(mode)) {
+                nextJob = findShortestJob();
+            } else {
+                nextJob = pendingJobs.get(0);
+            }
 
             if (!canSatisfy(nextJob)) {
                 return;
@@ -150,4 +155,19 @@ public class JobShopManager implements JobShopInterface {
         
         return total;
     }
+
+    private Job findShortestJob() {
+        Job shortest = null;
+        int shortestTime = Integer.MAX_VALUE;
+
+        for (Job job : pendingJobs) {
+            int time = totalProcessingTime(job);
+
+        if (time < shortestTime) {
+            shortestTime = time;
+            shortest = job;
+        }
+    }
+        return shortest;
+}
 }
