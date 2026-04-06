@@ -168,6 +168,9 @@ public class JobShopManager implements JobShopInterface {
             shortest = job;
         }
     }
+        if (shortest == null) {
+        return pendingJobs.get(0);
+        }
         return shortest;
-}
+    }
 }
