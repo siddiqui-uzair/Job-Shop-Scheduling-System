@@ -3,7 +3,7 @@ import java.util.List;
 public class Tests {
 
 
-        public class MachineThread extends Thread {
+        public class MachineThread extends Thread {  // thread that simulates a machine becoming available in the shop
                 public final String machineType;
                 public final int machineID;
                 private final JobShopManager jobShopManager;
