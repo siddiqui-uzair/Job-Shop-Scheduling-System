@@ -7,7 +7,7 @@ public class Tests {
                 public final String machineType;
                 public final int machineID;
                 private final JobShopManager jobShopManager;
-                public String returnedJobName;
+                public String returnedJobName; // stores the job name returned when this machine is released
 
                 public MachineThread(JobShopManager jobShopManager, String machineType, int machineID) {
                         this.jobShopManager = jobShopManager;
@@ -17,7 +17,7 @@ public class Tests {
                 }
 
                 @Override
-                public void run() {
+                public void run() {  // save the returned job name so later tests can check it
                         returnedJobName = jobShopManager.thisMachineAvailable(machineType, machineID);
                         System.out.println(machineType + " " + machineID + " machine proceeding");
                 }
