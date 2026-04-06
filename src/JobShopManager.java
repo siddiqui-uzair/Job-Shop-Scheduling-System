@@ -61,6 +61,7 @@ public class JobShopManager implements JobShopInterface {
 
             tryReleaseJobs();
 
+            // machine waits here until it is assigned to a completed job
         while (!request.released) {
             try {
                 request.condition.await();
