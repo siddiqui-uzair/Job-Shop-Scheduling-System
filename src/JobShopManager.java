@@ -44,6 +44,7 @@ public class JobShopManager implements JobShopInterface {
         lock.lock();
         try {
             pendingJobs.addAll(jobs);
+            tryReleaseJobs();
             } finally {
                 lock.unlock();
             }
@@ -58,6 +59,8 @@ public class JobShopManager implements JobShopInterface {
             waitingMachines.computeIfAbsent(type, key -> new LinkedList<>());
             queue.add(request);
 
+            tryReleaseJobs();
+
         while (!request.released) {
             try {
                 request.condition.await();
@@ -69,5 +72,69 @@ public class JobShopManager implements JobShopInterface {
         } finally {
             lock.unlock();
         }
+    }
+
+    private void tryReleaseJobs() {   // Try to release jobs in queue order while enough machines are available
+        while (!pendingJobs.isEmpty()) {
+            Job nextJob = pendingJobs.get(0);
+
+            if (!canSatisfy(nextJob)) {
+                return;
+            }
+
+            releaseJob(nextJob);
+            pendingJobs.remove(0);
+        }
+    }
+
+    // to  check weaather all machines types needed by a job are currently waiting
+    private boolean canSatisfy(Job job) {
+        Map<String, Integer> requiredMachines = countRequiredMachines(job);
+
+        for (Map.Entry<String, Integer> entry : requiredMachines.entrySet()) {
+            String machineType = entry.getKey();
+            int requiredCount = entry.getValue();
+
+            Queue<MachineRequest> queue = waitingMachines.get(machineType);
+            int availableCount = (queue == null) ? 0 : queue.size();
+
+            if (availableCount < requiredCount) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // asssign the required waiting machines to this job and wake them up
+    private void releaseJob(Job job) {
+        Map<String, Integer> requiredMachines = countRequiredMachines(job);
+
+        for (Map.Entry<String, Integer> entry : requiredMachines.entrySet()) {
+            String machineType = entry.getKey();
+            int requiredCount = entry.getValue();
+
+            Queue<MachineRequest> queue = waitingMachines.get(machineType);
+
+            for (int i = 0; i < requiredCount; i++) {
+                MachineRequest request = queue.remove();
+                request.assignedJobName = job.jobName;
+                request.released = true;
+                request.condition.signal();
+            }
+        }
+    }
+
+    // to count how many machines of each type a job needs
+    private Map<String, Integer> countRequiredMachines(Job job) {
+        Map<String, Integer> requiredMachines = new HashMap<>();
+
+        for (Operation operation : job.operations) {
+            String machineType = operation.machineType;
+            int currentCount = requiredMachines.getOrDefault(machineType, 0);
+            requiredMachines.put(machineType, currentCount + 1);
+        }
+
+        return requiredMachines;
     }
 }
