@@ -26,7 +26,7 @@ public class Tests {
                                         System.out.println(machineType + " " + machineID + " machine proceeding for "  + returnedJobName);
                 }
         }
-
+}
 
         // UR2 example test
         public void exampleUR2Test() {
@@ -63,8 +63,9 @@ public class Tests {
 
                 System.out.println("\nNow examine the machines released:\n"
                         + "\tThe correct result is that five FDM machines and one SLA machine proceed.\n\t"
-                        + "The specific machine IDs may vary between runs depending on thread scheduling.\n"
+                        + "The specific machine IDs may vary between runs depending on thread scheduling.\n\t"
+                        + "The printed job names should match Job1 or Job2 for released machines.\n"
                 );
         }
-
 }
+
