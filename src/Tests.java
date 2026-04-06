@@ -106,6 +106,25 @@ public class Tests {
 
         try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 
+        int releasedFdm = 0;
+        int releasedSla = 0;
+
+        for (MachineThread thread : fdmThreads) {
+                if (thread.returnedJobName != null) {
+                        releasedFdm++;
+                }
+        }
+
+        for (MachineThread thread : slaThreads) {
+                if (thread.returnedJobName != null) {
+                        releasedSla++;
+                }
+        }
+
+        System.out.println("\nReleased counts:");
+        System.out.println("FDM: " + releasedFdm);
+        System.out.println("SLA: " + releasedSla);
+
         System.out.println("\nExpected result:\n"
                 + "\tFour FDM machines and one SLA machine should proceed.\n\t"
                 + "The printed job names should be Job1 or Job2.\n");
