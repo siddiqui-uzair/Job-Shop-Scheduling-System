@@ -14,6 +14,7 @@ public class Tests {
                         this.machineType = machineType;
                         this.machineID = machineID;
                         this.setName("Machine-" + machineType + "-" + machineID);
+                        this.setDaemon(true);
                 }
 
                 @Override
@@ -68,6 +69,7 @@ public class Tests {
                 );
         }
 
+        // UR3 multiple jobs submitted before machines arrive
         public void jobsBeforeMachinesTest() {
                 JobShopManager jobShopManager = new JobShopManager("FCFS");
 
@@ -152,6 +154,7 @@ public class Tests {
                 + "The printed job names should be Job1 or Job2.\n");
 }
 
+        // UR6 shortest job first scheduling
         public void shortestJobFirstTest() {
                 JobShopManager jobShopManager = new JobShopManager("SJF");
                 
@@ -179,6 +182,7 @@ public class Tests {
                 + "It should be released for ShortJob first.\n");
         }
 
+        // UR6 additional test, multiple shortest jobs
         public void multipleShortestJobsTest() {
                 JobShopManager jobShopManager = new JobShopManager("SJF");
 
@@ -214,6 +218,7 @@ public class Tests {
                 + "They should be released for ShortJob1 and ShortJob2.\n");
         }
 
+        //UR4 machines and jobs can arrive in any order
         public void anyOrderTest() {
                 JobShopManager jobShopManager = new JobShopManager("FCFS");
 
@@ -256,6 +261,7 @@ public class Tests {
                 + "The printed job names should be Job1 or Job2.\n");
         }
 
+        //UR5returned job names must match job specifications
         public void returnedJobNamesTest() {
                 JobShopManager jobShopManager = new JobShopManager("FCFS");
 
@@ -289,7 +295,7 @@ public class Tests {
                 + "\tReturned names should be Red or Blue.\n\t"
                 + "Two machines should be assigned to Red and one to Blue.\n");
         }
-        // UR1
+         //UR1 single job after machines arrive
         public void singleJobMachinesFirstTest() {
                 JobShopManager jobShopManager = new JobShopManager("FCFS");
 
