@@ -155,14 +155,14 @@ public class Tests {
         public void shortestJobFirstTest() {
                 JobShopManager jobShopManager = new JobShopManager("SJF");
                 
-                Job longJob = new Job(
-                        "LongJob",
-                        List.of(new Operation("FDM", 8),
-                                new Operation("SLA", 7)));
+        Job longJob = new Job(
+                "LongJob",
+                List.of(new Operation("FDM", 8),
+                        new Operation("SLA", 7)));
 
-                Job shortJob = new Job(
-                        "ShortJob",
-                        List.of(new Operation("FDM", 2)));
+        Job shortJob = new Job(
+                "ShortJob",
+                List.of(new Operation("FDM", 2)));
 
         System.out.println("\nSubmit SJF jobs:\n");
         System.out.println(longJob);
@@ -182,18 +182,18 @@ public class Tests {
         public void multipleShortestJobsTest() {
                 JobShopManager jobShopManager = new JobShopManager("SJF");
 
-                Job longJob = new Job(
-                        "LongJob",
-                        List.of(new Operation("FDM", 9),
+        Job longJob = new Job(
+                "LongJob",
+                List.of(new Operation("FDM", 9),
                                 new Operation("SLA", 8)));
 
-                Job shortJob1 = new Job(
-                        "ShortJob1",
-                        List.of(new Operation("FDM", 2)));
+        Job shortJob1 = new Job(
+                "ShortJob1",
+                List.of(new Operation("FDM", 2)));
 
-                Job shortJob2 = new Job(
-                        "ShortJob2",
-                        List.of(new Operation("FDM", 3)));
+        Job shortJob2 = new Job(
+                "ShortJob2",
+                List.of(new Operation("FDM", 3)));
 
         System.out.println("\nSubmit multiple SJF jobs:\n");
         System.out.println(longJob);
@@ -228,15 +228,15 @@ public class Tests {
 
         try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 
-                Job job1 = new Job(
-                        "Job1",
-                        List.of(new Operation("FDM", 5),
-                                new Operation("SLA", 3)));
+        Job job1 = new Job(
+                "Job1",
+                List.of(new Operation("FDM", 5),
+                        new Operation("SLA", 3)));
 
-                Job job2 = new Job(
-                        "Job2",
-                        List.of(new Operation("FDM", 4),
-                                new Operation("FDM", 2)));
+        Job job2 = new Job(
+                "Job2",
+                List.of(new Operation("FDM", 4),
+                        new Operation("FDM", 2)));
 
         System.out.println("\nSubmit jobs in the middle:\n");
         System.out.println(job1);
@@ -254,5 +254,39 @@ public class Tests {
         System.out.println("\nExpected result:\n"
                 + "\tThree FDM machines and one SLA machine should proceed.\n\t"
                 + "The printed job names should be Job1 or Job2.\n");
+        }
+
+        public void returnedJobNamesTest() {
+                JobShopManager jobShopManager = new JobShopManager("FCFS");
+
+        Job job1 = new Job(
+                "Red",
+                List.of(new Operation("FDM", 5),
+                        new Operation("SLA", 3)));
+
+        Job job2 = new Job(
+                "Blue",
+                List.of(new Operation("FDM", 4)));
+
+        MachineThread fdm1 = new MachineThread(jobShopManager, "FDM", 1);
+        MachineThread sla1 = new MachineThread(jobShopManager, "SLA", 1);
+        MachineThread fdm2 = new MachineThread(jobShopManager, "FDM", 2);
+
+        jobShopManager.specifyJobs(List.of(job1, job2));
+
+        fdm1.start();
+        sla1.start();
+        fdm2.start();
+
+        try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+
+        System.out.println("\nReturned job names:");
+        System.out.println("FDM 1 -> " + fdm1.returnedJobName);
+        System.out.println("SLA 1 -> " + sla1.returnedJobName);
+        System.out.println("FDM 2 -> " + fdm2.returnedJobName);
+
+        System.out.println("\nExpected result:\n"
+                + "\tReturned names should be Red or Blue.\n\t"
+                + "Two machines should be assigned to Red and one to Blue.\n");
         }
 }
