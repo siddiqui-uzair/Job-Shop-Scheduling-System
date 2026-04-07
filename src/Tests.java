@@ -213,4 +213,46 @@ public class Tests {
                 + "\tTwo FDM machines should proceed.\n\t"
                 + "They should be released for ShortJob1 and ShortJob2.\n");
         }
+
+        public void anyOrderTest() {
+                JobShopManager jobShopManager = new JobShopManager("FCFS");
+
+        MachineThread fdm1 = new MachineThread(jobShopManager, "FDM", 1);
+        MachineThread sla1 = new MachineThread(jobShopManager, "SLA", 1);
+        MachineThread fdm2 = new MachineThread(jobShopManager, "FDM", 2);
+        MachineThread fdm3 = new MachineThread(jobShopManager, "FDM", 3);
+
+        System.out.println("\nStart some machines first:\n");
+        fdm1.start();
+        sla1.start();
+
+        try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+
+                Job job1 = new Job(
+                        "Job1",
+                        List.of(new Operation("FDM", 5),
+                                new Operation("SLA", 3)));
+
+                Job job2 = new Job(
+                        "Job2",
+                        List.of(new Operation("FDM", 4),
+                                new Operation("FDM", 2)));
+
+        System.out.println("\nSubmit jobs in the middle:\n");
+        System.out.println(job1);
+        System.out.println(job2);
+        jobShopManager.specifyJobs(List.of(job1, job2));
+
+        try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+
+        System.out.println("\nStart more machines after jobs:\n");
+        fdm2.start();
+        fdm3.start();
+
+        try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+
+        System.out.println("\nExpected result:\n"
+                + "\tThree FDM machines and one SLA machine should proceed.\n\t"
+                + "The printed job names should be Job1 or Job2.\n");
+        }
 }
