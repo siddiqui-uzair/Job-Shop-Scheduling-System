@@ -289,4 +289,44 @@ public class Tests {
                 + "\tReturned names should be Red or Blue.\n\t"
                 + "Two machines should be assigned to Red and one to Blue.\n");
         }
+        // UR1
+        public void singleJobMachinesFirstTest() {
+                JobShopManager jobShopManager = new JobShopManager("FCFS");
+
+        MachineThread[] fdmThreads = new MachineThread[5];
+
+        System.out.println("\nStart five FDM machines first:\n");
+        for (int i = 0; i < 5; i++) {
+                fdmThreads[i] = new MachineThread(jobShopManager, "FDM", i + 1);
+                fdmThreads[i].start();
+        }
+
+        try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+
+        Job job1 = new Job(
+                "Job1",
+                List.of(new Operation("FDM", 1),
+                        new Operation("FDM", 1)));
+
+        System.out.println("\nSubmit one job needing two FDM machines:\n");
+        System.out.println(job1);
+        jobShopManager.specifyJobs(List.of(job1));
+
+        try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+
+        int releasedFdm = 0;
+
+        for (MachineThread thread : fdmThreads) {
+                if (thread.returnedJobName != null) {
+                        releasedFdm++;
+                }
+        }
+
+        System.out.println("\nReleased counts:");
+        System.out.println("FDM: " + releasedFdm);
+
+        System.out.println("\nExpected result:\n"
+                + "\tTwo FDM machines should proceed.\n\t"
+                + "Three FDM machines should remain blocked.\n");
+}
 }
