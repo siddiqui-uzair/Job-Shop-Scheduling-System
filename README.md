@@ -58,4 +58,5 @@ Implements thread-safe machine and job management
 No exceptions thrown - handled internally
 Tests verify FCFS scheduling and machine allocation
 
-
+Academic Project
+This project was developed as part of my BSc Computer Science (Artificial Intelligence) coursework at Heriot-Watt University Dubai. It is shared for portfolio and educational purposes.
