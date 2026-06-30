@@ -1,6 +1,6 @@
 Job Shop Scheduling System
 
-A concurrent Java application implementing a thread-safe job shop scheduler using ReentrantLock and Condition variables.
+A concurrent Java application implementing a thread safe job shop scheduler using ReentrantLock and Condition variables.
 
 Overview
 
@@ -25,21 +25,29 @@ bashjava App
 
 Key Features
 
-
 ✅ Thread-safe job scheduling with locks and conditions
+
 ✅ Multi-machine resource management
+
 ✅ FCFS scheduling algorithm
+
 ✅ Comprehensive test suite
 
 
 Project Structure
 
 src/
+
 ├── JobShopManager.java    # Core scheduling logic
+
 ├── App.java               # Entry point
+
 ├── Tests.java             # Test cases
+
 ├── Job.java               # Data model (read-only)
+
 ├── Operation.java         # Data model (read-only)
+
 └── JobShopInterface.java  # Interface (read-only)
 
 Implementation Notes
